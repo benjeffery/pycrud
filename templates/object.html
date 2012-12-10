@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block body %}
+<h3>{{ collection }}/{{ object['name'] }}</h3>
+<div class="span12" ng-app=myApp ng-init='data={{ object | tojson | safe }}'>
+    <div ng-model="data">
+    <ul>
+        {% raw  %}
+        {{ data }}
+        <li>short_code:
+            <input type="text"
+               ng-model="data.short_code">
+        </li>
+        <li>name:
+            <input type="text"
+                   ng-model="data.name">
+        </li>
+        <li>sample_contexts:
+            <ul>
+                <li ng-repeat="sample_context in data.sample_contexts">
+                    name:<input type="text"
+                           ng-model="sample_context.name">
+
+                </li>
+            </ul>
+        </li>
+        <li ng-repeat="(key, val) in data">{{ key }}</li>
+        {% endraw %}
+    </ul>
+    </div>
+</div>
+{% endblock %}
