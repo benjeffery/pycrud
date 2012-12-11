@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session
+from flask import Flask, render_template, session, jsonify
 from flask.ext.login import LoginManager,  UserMixin, current_user, abort
 from flask.ext.browserid import BrowserID
 import settings
@@ -44,36 +44,18 @@ def index_page():
 def collection_index(collection):
     return render_template('collection_index.html', collection=collection, entries=db[collection].find())
 
-@app.route('/object/<collection>/<id>')
-def object(collection, id):
+@app.route('/object/<collection>/<id>.<format>')
+def object(collection, id, format):
     object = db[collection].find_one({'_id':ObjectId(id)})
     if object is None:
         abort(404)
-    del object['_id']
-    return render_template('object.html', collection=collection, object=object)
+    if format == 'html':
+        #todo - look up not needed - can 404 clientside
+        return render_template('object.html', collection=collection, object=object, dataspec=settings.data_prototypes[collection])
+    elif format == 'json':
+        del object['_id']
+        return jsonify(object)
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-#EACH OF THESE NEEDS TO OUT PUT THE HTML TO RENDER IT.... UNLESS WE DO THAT IN JS??!?
-    #class Object(object):
-    #    pass
-    #class Text(object):
-    #    pass
-    #class Markdown(object):
-    #    pass
-    #class List(object):
-    #    pass
-    #class Boolean(object):
-    #    pass
-    #class MongoLink(object):
-    #    pass
-    #class Email(object):
-    #    pass
-    #class HttpLink(object):
-    #    pass
-    #class Location(object):
-    #    pass
-    #class Image(object):
-    #    pass
