@@ -1,0 +1,12 @@
+<table>
+    <thead>
+    <tr>
+        <th>Collection</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="collection in collections | filter:search | orderBy:'name'">
+        <td><a href="#/{{collection.name}}">{{collection.name}}</a></td>
+    </tr>
+    </tbody>
+</table>

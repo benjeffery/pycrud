@@ -1,0 +1,27 @@
+<input type="text" ng-model="search" class="search-query" placeholder="Search">
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Short Code</th>
+        <th>Description</th>
+        <th>Contact</th>
+        <th>People</th>
+        <th>Sample Contexts</th>
+        <th>Samples</th>
+        <th><a href="#/new"><i class="icon-plus-sign"></i></a></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="study in studies | filter:search | orderBy:'short_code'">
+        <td><a href="#/studies/{{ study._id }}">{{ study.short_code }}</a></td>
+        <td>{{ study.name | cut:true:40 }}</td>
+        <td>{{ study.contact_person.name }}</td>
+        <td>{{ study.people.length }}</td>
+        <td><p ng-repeat="context in study.sample_contexts">{{ context.name }} </p></td>
+        <td>{{ study.sample_count }}</td>
+        <td>
+            <a href="#/studies/{{study._id}}/edit"><i class="icon-pencil"></i></a>
+        </td>
+    </tr>
+    </tbody>
+</table>

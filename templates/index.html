@@ -1,13 +1,5 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="span12">
-        <h3>Here are the collections avaliable:</h3>
-        <ul class="inline">
-            {% for collection in collections %}
-                   <li><a href="{{ url_for('collection_index', collection=collection) }}">{{ collection }}</a></li>
-            {% else %}
-                   <li class="text-error">No collections! doh!</li>
-            {% endfor %}
-        </ul>
+<div ng-view class="span12">
 </div>
 {% endblock %}

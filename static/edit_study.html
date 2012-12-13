@@ -1,0 +1,9 @@
+<h3>{{ study.short_code }}</h3>
+<ng-form name="form_study" ng-model="study" class="form-horizontal well-small">
+    <input type="text" name="short_code" ng-model="study.short_code">
+    <button ng-click="save()" ng-disabled="(!form_data.$dirty) || form_data.$invalid"
+            class="btn btn-primary btn-form">Save</button>
+</ng-form>
+<div pull-left>
+{{ study }}
+</div>

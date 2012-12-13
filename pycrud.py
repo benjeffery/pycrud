@@ -1,15 +1,19 @@
-from flask import Flask, render_template, session, jsonify
-from flask.ext.login import LoginManager,  UserMixin, current_user, abort
+import datetime
+from flask import Flask, render_template, session, Response, request
+from flask.ext.login import LoginManager,  UserMixin, current_user, abort, login_required
 from flask.ext.browserid import BrowserID
+from flask.views import MethodView
 import settings
 import pymongo
 from bson.objectid import ObjectId
-import inflect
-inflect = inflect.engine()
+import json
 
+import inflect
+
+#MONGO INIT
+from vermongo import VerCollection
 connection = pymongo.MongoClient(settings.db['host'], 27017)
 db = connection[settings.db['database']]
-settings.data_prototypes = dict((inflect.plural(k), v) for k,v in settings.data_prototypes.items())
 
 #FLASK INIT
 class User(UserMixin):
@@ -19,7 +23,6 @@ class User(UserMixin):
 def get_user_by_id(id):
     if id in settings.userlist:
         return User(id)
-    #TODO Proper noauth error
 
 def get_user(browser_id):
     return get_user_by_id(browser_id['email'])
@@ -35,26 +38,49 @@ browser_id = BrowserID()
 browser_id.user_loader(get_user)
 browser_id.init_app(app)
 
-
 @app.route('/')
 def index_page():
-    return render_template('index.html', collections=settings.data_prototypes.keys())
+    return render_template('index.html', collections=settings.data_spec.keys())
 
-@app.route('/collection/<collection>/')
-def collection_index(collection):
-    return render_template('collection_index.html', collection=collection, entries=db[collection].find())
+#JSON
+class MongoEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, datetime.datetime):
+            return o.isoformat()
+        elif isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
 
-@app.route('/object/<collection>/<id>.<format>')
-def object(collection, id, format):
-    object = db[collection].find_one({'_id':ObjectId(id)})
-    if object is None:
-        abort(404)
-    if format == 'html':
-        #todo - look up not needed - can 404 clientside
-        return render_template('object.html', collection=collection, object=object, dataspec=settings.data_prototypes[collection])
-    elif format == 'json':
-        del object['_id']
-        return jsonify(object)
+def jsonify(data):
+    return Response(json.dumps(data, cls=MongoEncoder), mimetype='application/json')
+
+class MongoAPI(MethodView):
+    def get(self, collection, item_id):
+        if collection is None:
+            return jsonify([{'name':name} for name in settings.data_spec.keys()])
+        if item_id is None:
+            return jsonify(list(db[collection].find()))
+        else:
+            return jsonify(data=db[collection].find_one({"_id": ObjectId(item_id)}))
+    def post(self, collection):
+        VerCollection(db[collection]).insert(request.json)
+        return jsonify(data=request.json)
+#Need vermongo impl
+#    def delete(self, collection, item_id):
+#        collection.remove({"_id": ObjectId(item_id)})
+#        return ""
+    def put(self, collection, item_id):
+        VerCollection(db[collection]).update(request.json)
+        return jsonify(data=request.json)
+
+mongo_view = login_required(MongoAPI.as_view('mongo'))
+app.add_url_rule('/api/', defaults={'collection': None, 'item_id': None},
+    view_func=mongo_view, methods=['GET',])
+app.add_url_rule('/api/<collection>/', defaults={'item_id': None},
+    view_func=mongo_view, methods=['GET',])
+app.add_url_rule('/api/<collection>/', view_func=mongo_view, methods=['POST',])
+app.add_url_rule('/api/<collection>/<item_id>', view_func=mongo_view,
+    methods=['GET', 'PUT', 'DELETE'])
 
 
 if __name__ == '__main__':
