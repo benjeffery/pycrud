@@ -2,18 +2,19 @@
 {% block body %}
 <div ng-app=myApp ng-controller="ObjCtrl" collection="{{ collection }}" objid="{{ object['_id'] }}">
     <h3>{{ collection }}/{% raw %}{{ data.name }}{% endraw %}</h3>
-    <ng-form name="form_data" ng-model="data" class="form-horizontal well-small">
+    <ng-form name="form_data" ng-model="data" class="form-horizontal pull-left clearfix">
         {% for key in dataspec %}
-            <div class="well well-small" ng-class="{error: form_data.{{ key }}.$invalid}">
+            <div class="root-object" ng-class="{error: form_data.{{ key }}.$invalid}">
                 <label>{{ key }}:</label>
                 <div>{{ dataspec[key].html('data.'+key) | safe }}</div>
             </div>
         {% endfor %}
-        <button ng-click="save()" ng-disabled="(!form_data.$dirty) || form_data.$invalid"
-                class="btn btn-primary btn-form">Save</button>
     </ng-form>
+    <button ng-click="save()" ng-disabled="(!form_data.$dirty) || form_data.$invalid"
+            class="btn btn-primary pull-left">Save</button>
+
     {% raw %}
-    <div class="well">
+    <div class="well pull-left">
         {{ data }}
     </div>
     {% endraw %}

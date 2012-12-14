@@ -2,10 +2,25 @@
     margin-right: 20px;
 }
 
-.well {
-    float: left;
+
+.list {
 }
 
-.btn-form {
-    float: right;
+.list-element-simple {
 }
+
+.list-element {
+
+}
+
+.list-btn-remove {
+
+}
+
+.list-btn-add {
+    .btn;
+    .btn-success;
+}
+
+
+.sub-object

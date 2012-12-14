@@ -17,7 +17,7 @@
     {% endfor %}
     <div class="navbar">
         <div class="navbar-inner">
-            <a class="brand" href="#">PyCRUD</a>
+            <a class="brand" href="/">PyCRUD</a>
             {% if current_user.is_authenticated() %}
                 <button class="btn btn-inverse pull-right" id="browserid-logout">Logout</button>
                 <div class="navbar-text pull-right">{{ current_user.id }}</div>
