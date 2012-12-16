@@ -1,4 +1,11 @@
 <h3>{{ study.short_code }}</h3>
 <h4>{{ study.name }}</h4>
-<p> {{ study.description }}</p>
-<p> {{ study.contact_person.name }}</p>
+<p><em><a href="#/contact_people/{{ study.contact_person._id }}">{{ study.contact_person.name }}</a></em></p>
+<p>{{ study.people.join(', ') }}</p>
+<p ng-bind-html-unsafe="study.description | markdown"></p>
+<div class="well pull-left well-small" ng-repeat="context in study.sample_contexts">
+    <div class="well well-small pull-right map clearfix" id="map_canvas" ui-map="myMap" ui-options="mapOptions"></div>
+    <h4> {{ context.name }}</h4>
+    <div ng-bind-html-unsafe="context.description | markdown"></div>
+</div>
+

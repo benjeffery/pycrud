@@ -1,4 +1,4 @@
-var pycrud = angular.module('pycrud', ['ngResource', 'ui']);
+var pycrud = angular.module('pycrud', ['ngResource', 'ui', 'ui-gravatar']);
 pycrud.value('ui.config', {
     highlight: {
         caseSensitive: false
@@ -40,6 +40,11 @@ pycrud.controller("StudiesCtrl", function($scope, Mongo) {
 pycrud.controller("ViewStudyCtrl", function($scope, $routeParams, Mongo) {
     $scope.study = Mongo.get({collection:'studies', id:$routeParams.id}, function() {
     });
+    $scope.mapOptions = {
+        center: new google.maps.LatLng(35.784, -78.670),
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
 });
 
 pycrud.controller("EditStudyCtrl", function($scope, $routeParams, Mongo) {
@@ -74,7 +79,14 @@ angular.module('ng').filter('cut', function () {
                 value = value.substr(0, lastspace);
             }
         }
-
         return value + (tail || ' …');
+    };
+});
+
+angular.module('ng').filter('markdown', function () {
+    return function (value, wordwise, max, tail) {
+        if (!value) return '';
+        var converter = new Showdown.converter();
+        return converter.makeHtml(value);
     };
 });

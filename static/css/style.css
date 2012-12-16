@@ -2,10 +2,7 @@
     margin-right: 20px;
 }
 
-.well {
-    float: left;
-}
-
-.btn-form {
-    float: right;
+.map {
+    height: 400px;
+    width: 400px;
 }
