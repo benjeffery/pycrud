@@ -17,6 +17,9 @@ pycrud.config(function($routeProvider) {
             when('/studies', {controller:"StudiesCtrl", templateUrl:'static/studies.html'}).
             when('/studies/:id', {controller:"ViewStudyCtrl", templateUrl:'static/study.html'}).
             when('/studies/:id/edit', {controller:"EditStudyCtrl", templateUrl:'static/edit_study.html'}).
+            when('/contact_persons', {controller:"ContactPersonsCtrl", templateUrl:'static/contact_persons.html'}).
+            when('/contact_persons/:id', {controller:"ViewContactPersonCtrl", templateUrl:'static/contact_person.html'}).
+            when('/contact_persons/:id/edit', {controller:"EditContactPersonCtrl", templateUrl:'static/edit_contact_person.html'}).
 //            when('/new', {controller:CreateCtrl, templateUrl:'detail.html'}).
             otherwise({redirectTo:'/'});
     });
@@ -50,7 +53,19 @@ pycrud.controller("ViewStudyCtrl", function($scope, $routeParams, Mongo) {
 pycrud.controller("EditStudyCtrl", function($scope, $routeParams, Mongo) {
     $scope.study = Mongo.get({collection:'studies', id:$routeParams.id}, function() {
     });
-    $scope.view_template = "static/study.html"
+});
+
+pycrud.controller("ContactPersonsCtrl", function($scope, Mongo) {
+    $scope.contact_persons = Mongo.query({collection:'contact_persons'}, function() {
+    });
+});
+pycrud.controller("ViewContactPersonCtrl", function($scope, $routeParams, Mongo) {
+    $scope.person = Mongo.get({collection:'contact_persons', id:$routeParams.id}, function() {
+    });
+});
+pycrud.controller("EditContactPersonCtrl", function($scope, $routeParams, Mongo) {
+    $scope.person = Mongo.get({collection:'contact_persons', id:$routeParams.id}, function() {
+    });
 });
 
 

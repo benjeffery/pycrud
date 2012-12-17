@@ -1,0 +1,28 @@
+<input type="text" ng-model="search" class="search-query" placeholder="Search">
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>URL</th>
+        <th>Affiliations</th>
+        <th>Image</th>
+        <th><a href="#/new"><i class="icon-plus-sign"></i></a></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="person in contact_persons | filter:search | orderBy:'name'">
+        <td><a href="#/contact_persons/{{ person._id }}" ng-bind-html-unsafe="person.name | highlight:search"></a></td>
+        <td ng-bind-html-unsafe="person.email | highlight:search"></td>
+        <td ng-bind-html-unsafe="person.url | highlight:search"></td>
+        <td>
+            <div ng-repeat="affiliation in person.affiliations" ng-bind-html-unsafe="affiliation | markdown | highlight:search"></div>
+        </td>
+        <td>
+            <i class="icon-ok" ng-show="person.image">
+        <td>
+            <a href="#/contact_persons/{{person._id}}/edit"><i class="icon-pencil"></i></a>
+        </td>
+    </tr>
+    </tbody>
+</table>

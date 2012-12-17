@@ -1,7 +1,7 @@
 <!doctype html>
 <html ng-app="pycrud">
 <head>
-    <title>PyCRUD</title>
+    <title>PfData</title>
     <link rel=stylesheet media="screen" type=text/css href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel=stylesheet media="screen" type=text/css href="{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.min.css') }}">
     <link rel=stylesheet media="screen" type=text/css href="{{ url_for('static', filename='css/style.css') }}">
@@ -24,7 +24,7 @@
     {% endfor %}
     <div class="navbar">
         <div class="navbar-inner">
-            <a class="brand" href="#">PyCRUD</a>
+            <a class="brand" href="#">PfDATA</a>
             {% if current_user.is_authenticated() %}
                 <button class="btn btn-inverse pull-right" id="browserid-logout">Logout</button>
                 <img gravatar-image class="navbar-text img-rounded pull-right" email="'{{ current_user.id }}'" size="40" rating="pg" default="404" >

@@ -1,0 +1,5 @@
+<h3>{{ person.name }}<a class="pull-right" href="#/contact_persons/{{person._id}}/edit"><button class="btn btn-primary">Edit</button></a></h3>
+<h4>Email: <a href="emailto:{{ person.email }}">{{ person.email }}</a></h4>
+<h5>URL: <a href="{{ person.url }}">{{ person.url }}</a></h5>
+Affiliations:<span ng-repeat="affiliation in person.affiliations" ng-bind-html-unsafe="affiliation | markdown"></span>
+<div class="well well-small" ng-bind-html-unsafe="person.description | markdown"></div>

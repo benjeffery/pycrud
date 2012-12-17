@@ -1,4 +1,4 @@
-<h3>{{ study.short_code }}</h3>
+<h3>{{ study.short_code }}<a class="pull-right" href="#/studies/{{study._id}}/edit"><button class="btn btn-primary">Edit</button></a></h3>
 <h4>{{ study.name }}</h4>
 <p><em><a href="#/contact_people/{{ study.contact_person._id }}">{{ study.contact_person.name }}</a></em></p>
 <p>{{ study.people.join(', ') }}</p>
@@ -7,7 +7,7 @@
     <div class="well well-small pull-right map clearfix" id="map_canvas" ui-map="myMap" ui-options="mapOptions"></div>
     <h4> {{ context.name }}</h4>
     <div ng-bind-html-unsafe="context.description | markdown"></div>
-    <table class="table table-condensed table-hover pull-left">
+<!--    <table class="table table-condensed table-hover pull-left">
         <thead>
         <tr>
             <th>Oxford Code</th>
@@ -26,6 +26,6 @@
             </td>
         </tr>
         </tbody>
-    </table>
+    </table> -->
 </div>
 

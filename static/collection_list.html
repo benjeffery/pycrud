@@ -1,12 +1,3 @@
-<table>
-    <thead>
-    <tr>
-        <th>Collection</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="collection in collections | filter:search | orderBy:'name'">
-        <td><a href="#/{{collection.name}}">{{collection.name}}</a></td>
-    </tr>
-    </tbody>
-</table>
+<h3 ng-repeat="collection in collections | orderBy:'name'">
+       <a href="#/{{collection.name}}">{{collection.name}}</a>
+</h3>
