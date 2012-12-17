@@ -31,7 +31,7 @@ data_spec = {
                 })
         )
     },
-    'corresponding_members': {
+    'contact_persons': {
         'name': Text(),
         'email': Email,
         'http': URL(),

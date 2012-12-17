@@ -3,9 +3,29 @@
 <p><em><a href="#/contact_people/{{ study.contact_person._id }}">{{ study.contact_person.name }}</a></em></p>
 <p>{{ study.people.join(', ') }}</p>
 <p ng-bind-html-unsafe="study.description | markdown"></p>
-<div class="well pull-left well-small" ng-repeat="context in study.sample_contexts">
+<div ng-repeat="context in study.sample_contexts" class="well pull-left well-small">
     <div class="well well-small pull-right map clearfix" id="map_canvas" ui-map="myMap" ui-options="mapOptions"></div>
     <h4> {{ context.name }}</h4>
     <div ng-bind-html-unsafe="context.description | markdown"></div>
+    <table class="table table-condensed table-hover pull-left">
+        <thead>
+        <tr>
+            <th>Oxford Code</th>
+            <th>Lab Sample</th>
+            <th>....</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="sample in context.samples">
+            <td>{{ sample.ox_code }}</td>
+            <td>
+                <i ng-show="sample.lab_sample" class="icon-warning-sign"></i>
+            </td>
+            <td>
+                Other
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 

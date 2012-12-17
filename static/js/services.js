@@ -50,6 +50,7 @@ pycrud.controller("ViewStudyCtrl", function($scope, $routeParams, Mongo) {
 pycrud.controller("EditStudyCtrl", function($scope, $routeParams, Mongo) {
     $scope.study = Mongo.get({collection:'studies', id:$routeParams.id}, function() {
     });
+    $scope.view_template = "static/study.html"
 });
 
 

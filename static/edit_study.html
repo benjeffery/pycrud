@@ -1,9 +1,42 @@
 <h3>{{ study.short_code }}</h3>
-<ng-form name="form_study" ng-model="study" class="form-horizontal well-small">
-    <input type="text" name="short_code" ng-model="study.short_code">
-    <button ng-click="save()" ng-disabled="(!form_data.$dirty) || form_data.$invalid"
+<ng-form name="form_study" ng-model="study" class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label" for="short_code">Short Code</label>
+        <div class="controls">
+            <input type="text" id="short_code" name="short_code" ng-model="study.short_code">
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="name">Name</label>
+        <div class="controls">
+            <input class="span6" type="text" id="name" name="name" ng-model="study.name">
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="contact_person">Contact Person</label>
+        <div class="controls">
+            <select ui-select2 ng-model="study.contact_person">
+                
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="people">People</label>
+        <div class="controls">
+            <textarea class="span6" rows=4 type="text" id="people" people="people" ng-model="study.people" ng-list></textarea>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="description">Description</label>
+        <div class="controls">
+            <textarea class="span6" rows=6 type="text" id="description" description="description" ng-model="study.description"></textarea>
+            <span class="help-block" ng-bind-html-unsafe="study.description | markdown"></span>
+        </div>
+
+    </div>
+    <button ng-click="save()" ng-disabled="(!form_study.$dirty) || form_study.$invalid"
             class="btn btn-primary btn-form">Save</button>
 </ng-form>
 <div pull-left>
-{{ study }}
+<pre>{{ study | json }}</pre>
 </div>
