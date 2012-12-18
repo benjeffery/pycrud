@@ -7,7 +7,9 @@ pycrud.value('ui.config', {
 
 //Init the connection to mongo
 pycrud.factory('Mongo', function($resource) {
-        return $resource('/api/:collection/:id');
+        return $resource('/api/:collection/:id',
+            {},
+            {update: {method:'PUT'}});
     }
 );
 
@@ -30,13 +32,13 @@ pycrud.controller("CollectionListCtrl", function($scope, Mongo) {
 
 pycrud.controller("StudiesCtrl", function($scope, Mongo) {
     $scope.studies = Mongo.query({collection:'studies'}, function() {
-        for (var i=0;i<$scope.studies.length;i++) {
-            var count = 0;
-            for (var j=0;j<$scope.studies[i].sample_contexts.length;j++) {
-                count += $scope.studies[i].sample_contexts[j].samples.length
-            }
-            $scope.studies[i].sample_count = count
-        }
+//        for (var i=0;i<$scope.studies.length;i++) {
+//            var count = 0;
+//            for (var j=0;j<$scope.studies[i].sample_contexts.length;j++) {
+//                count += $scope.studies[i].sample_contexts[j].samples.length
+//            }
+//            $scope.studies[i].sample_count = count
+//        }
     });
 });
 
@@ -53,6 +55,25 @@ pycrud.controller("ViewStudyCtrl", function($scope, $routeParams, Mongo) {
 pycrud.controller("EditStudyCtrl", function($scope, $routeParams, Mongo) {
     $scope.study = Mongo.get({collection:'studies', id:$routeParams.id}, function() {
     });
+    $scope.omgcat = { "id": "50cf76aebf882e4a57383262", "text": "Ben Jeffery" };
+    $scope.version3 = {
+        data: []
+    };
+    $scope.contact_persons = Mongo.query({collection:'contact_persons'}, function() {
+        for (var i=0;i<$scope.contact_persons.length;i++) {
+            var obj = $scope.contact_persons[i];
+            $scope.contact_persons[i] = {id: obj['_id'], text:obj.name};
+        }
+        angular.extend($scope.version3.data, $scope.contact_persons);
+    });
+
+    $scope.save = function() {
+        //Parse the select box
+        $scope.study.contact_person = JSON.parse($scope.study.contact_person);
+        Mongo.update({collection:'studies', id:study._id}, $scope.study, function(study) {
+            $location.path('/studies/'+study._id);
+        });
+    };
 });
 
 pycrud.controller("ContactPersonsCtrl", function($scope, Mongo) {
@@ -63,9 +84,14 @@ pycrud.controller("ViewContactPersonCtrl", function($scope, $routeParams, Mongo)
     $scope.person = Mongo.get({collection:'contact_persons', id:$routeParams.id}, function() {
     });
 });
-pycrud.controller("EditContactPersonCtrl", function($scope, $routeParams, Mongo) {
+pycrud.controller("EditContactPersonCtrl", function($scope, $routeParams, $location, Mongo) {
     $scope.person = Mongo.get({collection:'contact_persons', id:$routeParams.id}, function() {
     });
+    $scope.save = function() {
+        Mongo.update({collection:'contact_persons', id:person._id}, $scope.person, function(person) {
+            $location.path('/contact_persons/'+person._id);
+        });
+    };
 });
 
 

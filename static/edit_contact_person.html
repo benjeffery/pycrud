@@ -24,7 +24,7 @@
         <label class="control-label" for="affiliations">Affiliations</label>
         <div class="controls">
             <span class="help-block">Comma seperated list of affiliations. To put a link in use [Anchor Text](http://www.link.com)</span>
-            <textarea class="span6" rows=4 type="text" id="people" people="people" ng-model="person.affiliations" ng-list></textarea>
+            <textarea class="span6" rows=4 type="text" id="affiliations" people="affiliations" ng-model="person.affiliations" ng-list></textarea>
             <span class="help-block" ng-repeat="affiliation in person.affiliations" ng-bind-html-unsafe="affiliation | markdown"></span>
         </div>
     </div>

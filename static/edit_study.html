@@ -15,11 +15,12 @@
     <div class="control-group">
         <label class="control-label" for="contact_person">Contact Person</label>
         <div class="controls">
-            <select ui-select2 ng-model="study.contact_person">
-                
-            </select>
+            <input ui-select2="version3" ng-model="omgcat" type="hidden" id="contact_person"></input>
         </div>
+        {{ omgcat | json }}
+        {{ contact_persons | json }}
     </div>
+    {{ ben }}
     <div class="control-group">
         <label class="control-label" for="people">People</label>
         <div class="controls">

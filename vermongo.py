@@ -25,6 +25,7 @@ class VerCollection:
             raise ValueError('no _version in obj so cannot update')
         base_obj = self.collection.find_one({'_id':obj['_id']})
         if base_obj is None:
+            print obj
             raise ObjDoesNotExistException()
         if base_obj == obj:
             return
@@ -46,6 +47,7 @@ class VerCollection:
         except Exception as e:
             obj['_version'] -= 1
             raise e
+        return self.collection.find_one({'_id':obj['_id']})
 
     def __getattr__(self, attr):
         return getattr(self.collection, attr)

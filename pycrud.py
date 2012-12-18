@@ -63,15 +63,17 @@ class MongoAPI(MethodView):
         else:
             return jsonify(data=db[collection].find_one({"_id": ObjectId(item_id)}))
     def post(self, collection):
-        VerCollection(db[collection]).insert(request.json)
-        return jsonify(data=request.json)
+        result = VerCollection(db[collection]).insert(request.json)
+        return jsonify(result)
 #Need vermongo impl
 #    def delete(self, collection, item_id):
 #        collection.remove({"_id": ObjectId(item_id)})
 #        return ""
     def put(self, collection, item_id):
-        VerCollection(db[collection]).update(request.json)
-        return jsonify(data=request.json)
+        assert (item_id == request.json['_id'])
+        request.json['_id'] = ObjectId(item_id)
+        result = VerCollection(db[collection]).update(request.json)
+        return jsonify(result)
 
 mongo_view = login_required(MongoAPI.as_view('mongo'))
 app.add_url_rule('/api/', defaults={'collection': None, 'item_id': None},

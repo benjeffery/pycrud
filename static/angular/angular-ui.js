@@ -653,7 +653,9 @@ angular.module('ui.directives').directive('uiSelect2', ['ui.config', '$http', fu
         scope.$watch(attrs.ngMultiple, function(newVal) {
           elm.select2(opts);
         });
-
+          console.log(elm.val());
+         console.log(scope.$eval(attrs.ngModel));
+          console.log(scope.$eval(attrs.ngModel));
         // Set initial value since Angular doesn't
         elm.val(scope.$eval(attrs.ngModel));
 
