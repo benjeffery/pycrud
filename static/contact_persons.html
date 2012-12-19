@@ -19,7 +19,7 @@
             <div ng-repeat="affiliation in person.affiliations" ng-bind-html-unsafe="affiliation | markdown | highlight:search"></div>
         </td>
         <td>
-            <i class="icon-ok" ng-show="person.image">
+            <i class="icon-ok" ng-show="person.image"></i>
         <td>
             <a href="#/contact_persons/{{person._id}}/edit"><i class="icon-pencil"></i></a>
         </td>

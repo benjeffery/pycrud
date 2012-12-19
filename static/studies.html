@@ -1,24 +1,24 @@
 <input type="text" ng-model="search" class="search-query" placeholder="Search">
-<table class="table table-striped table-hover">
+<table class="table table-condensed table-hover">
     <thead>
     <tr>
         <th>Short Code</th>
-        <th>Description</th>
+        <th>Name</th>
         <th>Contact</th>
         <th>People</th>
         <th>Sample Contexts</th>
-<!--        <th>Samples</th> -->
+        <th>Total Samples</th>
         <th><a href="#/new"><i class="icon-plus-sign"></i></a></th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="study in studies | filter:search | orderBy:'short_code'">
         <td><a href="#/studies/{{ study._id }}" ng-bind-html-unsafe="study.short_code | highlight:search"></a></td>
-        <td ng-bind-html-unsafe="study.name | cut:true:40 | highlight:search"></td>
+        <td ng-bind-html-unsafe="study.name | cut:true:300 | highlight:search"></td>
         <td ng-bind-html-unsafe="study.contact_person.name | highlight:search"></td>
         <td>{{ study.people.length }}</td>
-        <td><p ng-repeat="context in study.sample_contexts" ng-bind-html-unsafe="context.name | highlight:search"></p></td>
-<!--        <td>{{ study.sample_count }}</td> -->
+        <td ><p ng-class="context.name" ng-repeat="context in study.sample_contexts | orderBy:'name'"><span>{{ context.samples.length }}:</span><span ng-bind-html-unsafe="context.name | highlight:search"></span></p></td>
+        <td>{{ study.sample_count }}</td>
         <td>
             <a href="#/studies/{{study._id}}/edit"><i class="icon-pencil"></i></a>
         </td>

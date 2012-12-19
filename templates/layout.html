@@ -31,7 +31,7 @@
                 <button class="btn btn-inverse pull-right" id="browserid-logout">Logout</button>
                 <img gravatar-image class="navbar-text img-rounded pull-right" email="'{{ current_user.id }}'" size="40" rating="pg" default="404" >
                 <div class="navbar-text pull-right">{{ current_user.id }}</div>
-          {% else %}
+            {% else %}
                 <button class="btn pull-right" id="browserid-login">Login</button>
             {% endif %}
         </div>

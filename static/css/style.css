@@ -6,3 +6,20 @@
     height: 400px;
     width: 400px;
 }
+
+.Unknown {
+    color: #dc143c;
+}
+.Lab {
+    color: #2e8b57;
+}
+
+.table-compact th,
+.table-compact td {
+    font-size: 12px;
+    line-height: 12px;
+    padding: 3px 3px;
+}
+p {
+    margin: 0 0 2px;
+}

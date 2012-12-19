@@ -1,31 +1,35 @@
-<h3>{{ study.short_code }}<a class="pull-right" href="#/studies/{{study._id}}/edit"><button class="btn btn-primary">Edit</button></a></h3>
-<h4>{{ study.name }}</h4>
-<p><em><a href="#/contact_people/{{ study.contact_person._id }}">{{ study.contact_person.name }}</a></em></p>
-<p>{{ study.people.join(', ') }}</p>
-<p ng-bind-html-unsafe="study.description | markdown"></p>
+<h3 class="row span12">{{ study.short_code }}<a class="pull-right" href="#/studies/{{study._id}}/edit"><button class="btn btn-primary">Edit</button></a></h3>
+<h4 class="row span12">{{ study.name }}</h4>
+<p class="row span6"><em><a href="#/contact_persons/{{ study.contact_person._id }}">{{ study.contact_person.name }}</a></em></p>
+<p class="row span6">{{ study.people.join(', ') }}</p>
+<p class="row span6" ng-bind-html-unsafe="study.description | markdown"></p>
 <div ng-repeat="context in study.sample_contexts" class="well pull-left well-small">
-    <div class="well well-small pull-right map clearfix" id="map_canvas" ui-map="myMap" ui-options="mapOptions"></div>
-    <h4> {{ context.name }}</h4>
-    <div ng-bind-html-unsafe="context.description | markdown"></div>
-<!--    <table class="table table-condensed table-hover pull-left">
+    <div class="span6">
+        <h4> {{ context.name }}</h4>
+        <div ng-bind-html-unsafe="context.description | markdown"></div>
+        {{ context.location }}
+        <div class="map" id="map_canvas" ui-map="myMap" ui-options="mapOptions"></div>
+    </div>
+    <table class="table table-compact table-hover span6">
         <thead>
         <tr>
             <th>Oxford Code</th>
-            <th>Lab Sample</th>
-            <th>....</th>
+            <th>Excluded?</th>
+            <th>Year</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="sample in context.samples">
             <td>{{ sample.ox_code }}</td>
             <td>
-                <i ng-show="sample.lab_sample" class="icon-warning-sign"></i>
+                <i ng-show="sample.excluded" class="icon-warning-sign"></i>
             </td>
             <td>
-                Other
+                {{ sample.year }}
             </td>
         </tr>
         </tbody>
-    </table> -->
+    </table>
+
 </div>
 
