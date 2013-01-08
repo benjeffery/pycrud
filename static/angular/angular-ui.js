@@ -653,7 +653,6 @@ angular.module('ui.directives').directive('uiSelect2', ['ui.config', '$http', fu
         scope.$watch(attrs.ngMultiple, function(newVal) {
           elm.select2(opts);
         });
-        sel = elm;
         // Initialize the plugin late so that the injected DOM does not disrupt the template compiler
         setTimeout(function () {
           elm.select2(opts);

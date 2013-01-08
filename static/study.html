@@ -1,35 +1,56 @@
-<h3 class="row span12">{{ study.short_code }}<a class="pull-right" href="#/studies/{{study._id}}/edit"><button class="btn btn-primary">Edit</button></a></h3>
-<h4 class="row span12">{{ study.name }}</h4>
-<p class="row span6"><em><a href="#/contact_persons/{{ study.contact_person._id }}">{{ study.contact_person.name }}</a></em></p>
-<p class="row span6">{{ study.people.join(', ') }}</p>
-<p class="row span6" ng-bind-html-unsafe="study.description | markdown"></p>
-<div ng-repeat="context in study.sample_contexts" class="well pull-left well-small">
+<div class="row">
     <div class="span6">
-        <h4> {{ context.name }}</h4>
-        <div ng-bind-html-unsafe="context.description | markdown"></div>
-        {{ context.location }}
-        <div class="map" id="map_canvas" ui-map="myMap" ui-options="mapOptions"></div>
+        <h3>{{ study.short_code }}</h3>
     </div>
-    <table class="table table-compact table-hover span6">
-        <thead>
-        <tr>
-            <th>Oxford Code</th>
-            <th>Excluded?</th>
-            <th>Year</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="sample in context.samples">
-            <td>{{ sample.ox_code }}</td>
-            <td>
-                <i ng-show="sample.excluded" class="icon-warning-sign"></i>
-            </td>
-            <td>
-                {{ sample.year }}
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
+    <div class="span6">
+        <a class="pull-right" href="#/studies/{{study._id}}/edit"><button class="btn btn-primary">Edit</button></a>
+    </div>
+</div>
+<div class="row">
+    <h4 class="span12">{{ study.name }}</h4>
+</div>
+<div class="row">
+    <p class="span6"><em><a href="#/contact_persons/{{ study.contact_person._id }}">{{ study.contact_person.name }}</a></em></p>
+</div>
+<div class="row">
+    <p class="span6">{{ study.people.join(', ') }}</p>
+</div>
+<div class="row">
+    <p class="span6 well well-small" ng-bind-html-unsafe="study.description | markdown"></p>
+</div>
+<div class="row">
+    <div ng-repeat="context in study.sample_contexts" class="span12 well well-small">
+        <div class="row">
+            <div class="span6">
+                <h4> {{ context.name }}</h4>
+                <div ng-bind-html-unsafe="context.description | markdown"></div>
+                {{ context.location }}
+                <div class="map" id="map_canvas" ui-map="myMap" ui-options="mapOptions"></div>
+            </div>
+            <div class="span6">
+                <button ng-init="display_samples = context.samples.length < 10" button-toggle="active" class="btn" ng-model="display_samples">Display {{ context.samples.length }} samples</button>
+                <table class="table table-compact table-hover" ng-show="display_samples">
+                    <thead>
+                    <tr>
+                        <th>Oxford Code</th>
+                        <th>Excluded?</th>
+                        <th>Year</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="sample in context.samples">
+                        <td>{{ sample.ox_code }}</td>
+                        <td>
+                            <i ng-show="sample.excluded" class="icon-warning-sign"></i>
+                        </td>
+                        <td>
+                            {{ sample.year }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 

@@ -46,6 +46,7 @@ for line in Reader('SitesInfo.txt'):
             'long': line['Loc2'],
             'country': line['Country'],
             'sub-continent': line['SubCont'],
+            '_version':1
             }
         paul_id_to_db_id[line['ID']]  = locations.save(location)
 
@@ -54,7 +55,7 @@ for line in Reader('metadata-2.0.2_withsites.txt'):
     #First get the study object
     study = studies.find_one({'short_code':line['Study']})
     if study is None:
-        study = {'short_code': line['Study'], 'sample_contexts':[]}
+        study = {'short_code': line['Study'], 'sample_contexts':[], '_version':1}
     sample_context_name = line['Site']
     if not sample_context_name and line['LabSample']=='TRUE':
         sample_context_name = 'LAB_Lab_Sample'

@@ -15,7 +15,7 @@
     <div class="control-group">
         <label class="control-label" for="contact_person">Contact Person</label>
         <div class="controls">
-            <input ui-select2="person_select" ng-model="study.contact_person" type="hidden" id="contact_person" style="width:400px"></input>
+            <input mongo-link collection="contact_persons" name-field="name" ng-model="study.contact_person" type="hidden" id="contact_person" style="width:400px"></input>
         </div>
     </div>
     <div class="control-group">
@@ -30,7 +30,7 @@
         <div class="controls">
             <span class="help-block">Markdown format: <a href="http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet">help</a></span>
             <textarea class="span6" rows=6 type="text" id="description" description="description" ng-model="study.description"></textarea>
-            <span class="help-block" ng-bind-html-unsafe="study.description | markdown"></span>
+            <span class="well well-small help-block" ng-bind-html-unsafe="study.description | markdown"></span>
         </div>
 
     </div>

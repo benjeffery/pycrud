@@ -1,32 +1,10 @@
 var pycrud = angular.module('pycrud', ['ngResource', 'ui', 'ui-gravatar']);
-pycrud.value('ui.config', {
-    highlight: {
-        caseSensitive: false
-    }
-});
 
 //Init the connection to mongo
 pycrud.factory('Mongo', function($resource) {
         return $resource('/api/:collection/:id',
             {},
             {update: {method:'PUT'}});
-    }
-);
-pycrud.factory('SelectConf', function() {
-        return function(key) {
-            return {
-                data: [],
-                formatSelection: function(obj) {
-                    return obj[key];
-                },
-                formatResult: function(obj) {
-                    return obj[key];
-                },
-                id: function(obj) {
-                    return obj['_id'];
-                }
-            };
-        }
     }
 );
 
@@ -70,14 +48,9 @@ pycrud.controller("ViewStudyCtrl", function($scope, $routeParams, Mongo) {
     };
 });
 
-pycrud.controller("EditStudyCtrl", function($scope, $routeParams, $location, Mongo, SelectConf) {
+pycrud.controller("EditStudyCtrl", function($scope, $routeParams, $location, Mongo) {
     $scope.study = Mongo.get({collection:'studies', id:$routeParams.id}, function() {
     });
-    $scope.person_select = SelectConf('name');
-    $scope.contact_persons = Mongo.query({collection:'contact_persons'}, function() {
-        angular.extend($scope.person_select.data, $scope.contact_persons);
-    });
-
     $scope.save = function() {
         //TODO - Shouldn't be whole person object
         $scope.study.contact_person = {'_id':$scope.study.contact_person._id, 'name':$scope.study.contact_person.name};
