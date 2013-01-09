@@ -32,6 +32,38 @@ pycrud.directive('mongoLink', function (Mongo) {
             var objects_by_id = {};
 
             return function (scope, elm, attrs, controller) {
+                function view_to_model(view){
+                    if (isMultiple) {
+                        var val = [];
+                        for (var i=0;i<view.length;i++) {
+                            val.push({'_id':view[i]['_id']})
+                        }
+                        return val;
+                    } else {
+                        return {'_id': view['_id']};
+                    }
+                }
+                function model_to_view(model){
+                    if (isMultiple) {
+                        if (!model) {
+                            return [];
+                        }
+                        else {
+                            var choices = [];
+                            for (var i=0;i<model.length;i++) {
+                                choices.push(objects_by_id[model[i]['_id']]);
+                            }
+                            return choices;
+                        }
+                    } else {
+                        if (model && '_id' in model) {
+                            return objects_by_id[model['_id']];
+                        } else {
+                            return null;
+                        }
+                    }
+                }
+
                 // instance-specific options
                 var ext_opts = {
                     query: function (options) {
@@ -40,30 +72,21 @@ pycrud.directive('mongoLink', function (Mongo) {
                             more: false,
                             results: matches
                         });
-                    }
+                    },
+                    multiple: isMultiple
                 };
                 var opts = angular.extend({}, options, ext_opts);
-
-                if (isMultiple) {
-                    opts.multiple = true;
-                }
 
                 if (controller) {
                     // Watch the model for programmatic changes
                     controller.$render = function () {
-                        if (isMultiple && !controller.$modelValue) {
-                            elm.select2('data', []);
-                        } else if (controller.$modelValue && '_id' in controller.$modelValue) {
-                            elm.select2('data', objects_by_id[controller.$modelValue['_id']]);
-                        }
+                        elm.select2('data', model_to_view(controller.$modelValue));
                     };
                 }
 
-                // Set the view and model value and update the angular template manually for the ajax/multiple select2.
                 elm.bind("change", function () {
                     scope.$apply(function () {
-                        var val = {'_id': elm.select2('data')['_id']};
-                        controller.$setViewValue(val);
+                        controller.$setViewValue(view_to_model(elm.select2('data')));
                     });
                 });
 
@@ -71,8 +94,7 @@ pycrud.directive('mongoLink', function (Mongo) {
                     var initSelection = opts.initSelection;
                     opts.initSelection = function (element, callback) {
                         initSelection(element, function (value) {
-                            var val = {'_id': value['_id']};
-                            controller.$setViewValue(val);
+                            controller.$setViewValue(view_to_model(value));
                             callback(value);
                         });
                     };
@@ -82,9 +104,6 @@ pycrud.directive('mongoLink', function (Mongo) {
                     elm.select2(value && 'disable' || 'enable');
                 });
 
-                scope.$watch(attrs.ngMultiple, function(newVal) {
-                    elm.select2(opts);
-                });
                 // Initialize the plugin late so that the injected DOM does not disrupt the template compiler
                 setTimeout(function () {
                     //get the possible selections and add in ID and TEXT as required by select2
@@ -96,9 +115,7 @@ pycrud.directive('mongoLink', function (Mongo) {
                         }
                         elm.select2(opts);
                         var current_val = scope.$eval(attrs.ngModel);
-                        if (current_val && '_id' in current_val) {
-                            elm.select2("data",objects_by_id[scope.$eval(attrs.ngModel)['_id']]);
-                        }
+                        elm.select2('data', model_to_view(scope.$eval(attrs.ngModel)));
                     });
                 });
             };

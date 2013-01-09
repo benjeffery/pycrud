@@ -61,6 +61,7 @@ class MongoAPI(MethodView):
         if item_id is None:
             return jsonify(list(db[collection].find()))
         else:
+            print collection
             return jsonify(data=db[collection].find_one({"_id": ObjectId(item_id)}))
     def post(self, collection):
         result = VerCollection(db[collection]).insert(request.json)
