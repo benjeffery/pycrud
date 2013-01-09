@@ -22,29 +22,25 @@ pycrud.directive('mongoLink', function (Mongo) {
     var options = {
         highlight: {
             caseSensitive: false
-        },
-        id: function(obj) {
-            return obj['_id'];
-        },
-        data: []
+        }
     };
     return {
         require: '?ngModel',
         compile: function (tElm, tAttrs) {
-            var repeatOption,
-                repeatAttr,
-                isMultiple = (tAttrs.multiple !== undefined);
+            var isMultiple = (tAttrs.multiple !== undefined);
+            var objects = [];
+            var objects_by_id = {};
 
             return function (scope, elm, attrs, controller) {
                 // instance-specific options
-                var name_field = attrs.nameField;
                 var ext_opts = {
-                        formatSelection: function(obj) {
-                            return obj[name_field];
-                        },
-                        formatResult: function(obj) {
-                            return obj[name_field];
-                        }
+                    query: function (options) {
+                        var matches = objects.filter(function(obj) {return obj.text.toUpperCase().indexOf(options.term.toUpperCase())>=0;})
+                        options.callback({
+                            more: false,
+                            results: matches
+                        });
+                    }
                 };
                 var opts = angular.extend({}, options, ext_opts);
 
@@ -57,8 +53,8 @@ pycrud.directive('mongoLink', function (Mongo) {
                     controller.$render = function () {
                         if (isMultiple && !controller.$modelValue) {
                             elm.select2('data', []);
-                        } else {
-                            elm.select2('data', controller.$modelValue);
+                        } else if (controller.$modelValue && '_id' in controller.$modelValue) {
+                            elm.select2('data', objects_by_id[controller.$modelValue['_id']]);
                         }
                     };
                 }
@@ -67,7 +63,6 @@ pycrud.directive('mongoLink', function (Mongo) {
                 elm.bind("change", function () {
                     scope.$apply(function () {
                         var val = {'_id': elm.select2('data')['_id']};
-                        val[attrs.nameField] = elm.select2('data')[attrs.nameField];
                         controller.$setViewValue(val);
                     });
                 });
@@ -76,7 +71,8 @@ pycrud.directive('mongoLink', function (Mongo) {
                     var initSelection = opts.initSelection;
                     opts.initSelection = function (element, callback) {
                         initSelection(element, function (value) {
-                            controller.$setViewValue(value);
+                            var val = {'_id': value['_id']};
+                            controller.$setViewValue(val);
                             callback(value);
                         });
                     };
@@ -91,11 +87,18 @@ pycrud.directive('mongoLink', function (Mongo) {
                 });
                 // Initialize the plugin late so that the injected DOM does not disrupt the template compiler
                 setTimeout(function () {
-                        // Set initial value since Angular doesn't
-                        var data = Mongo.query({collection:attrs.collection}, function() {
-                        angular.extend(opts.data, data);
+                    //get the possible selections and add in ID and TEXT as required by select2
+                    objects = Mongo.query({collection:tAttrs.collection}, function() {
+                        for (var i=0;i<objects.length;i++) {
+                            objects[i].id = objects[i]['_id'];
+                            objects[i].text = objects[i][attrs.nameField];
+                            objects_by_id[objects[i]['_id']] = objects[i];
+                        }
                         elm.select2(opts);
-                        elm.select2("data",scope.$eval(attrs.ngModel));
+                        var current_val = scope.$eval(attrs.ngModel);
+                        if (current_val && '_id' in current_val) {
+                            elm.select2("data",objects_by_id[scope.$eval(attrs.ngModel)['_id']]);
+                        }
                     });
                 });
             };
