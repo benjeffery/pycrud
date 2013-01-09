@@ -1,6 +1,3 @@
-from link import Link
-from datatypes import Object, Text, Markdown, MongoLink, List, Boolean, Email, URL, Location, Image
-
 secret = 'SECRET HERE'
 
 db = {'host': 'localhost',
