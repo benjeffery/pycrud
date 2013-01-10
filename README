@@ -1,0 +1,20 @@
+Setup
+=====
+
+Create a mongodb
+
+ mongodb --dbpath=/path/to/database
+
+Setup python
+
+ virtualenv pycrud
+ source bin/activate
+ pip install -r REQUIREMENTS
+
+
+Start server
+ python pycrud.py
+
+Configure data
+ vi settings.py
+ (cd scripts; python load_samples.py)
