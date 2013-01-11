@@ -11,7 +11,6 @@ contact_persons = db.contact_persons
 
 class Reader:
     def __init__(self, file):
-        print file
         self.file = open(file, 'r')
         dialect = csv.Sniffer().sniff(self.file.read(2048*4))
         self.file.seek(0)
@@ -44,7 +43,7 @@ for line in Reader('SitesInfo.txt'):
         'paul_id': line['ID'],
         'name': ' '.join(line['ID'].split('_')[1:]),
         'lat': line['Location1'],
-        'long': line['Loc2'],
+        'lon': line['Loc2'],
         'country': line['Country'],
         'sub-continent': line['SubCont'],
         '_version':1
@@ -56,7 +55,7 @@ for line in Reader('metadata-2.0.2_withsites.txt'):
     #First get the study object
     study = studies.find_one({'legacy_name':line['Study']})
     if study is None:
-        study = {'legacy_name': line['Study'], 'sample_contexts':[], '_version':1}
+        study = {'legacy_name': line['Study'], 'sample_contexts':[], 'people':[], 'contact_persons':[], '_version':1}
     sample_context_name = line['Site']
     if not sample_context_name and line['LabSample']=='TRUE':
         sample_context_name = 'LAB_Lab_Sample'
@@ -94,6 +93,19 @@ for study in studies.find():
     study['title'] = af_study['title'].split(' - ')[-1]
     study['name'] = af_study['name']
     study['description'] = af_study['description']
+    for contact in af_study['contacts']:
+        #Some have no email so have to use name....
+        db_contact = contact_persons.find_one({'name':contact['name']})
+        if db_contact:
+            study['contact_persons'].append({'_id':db_contact['_id'], 'name':db_contact['name']})
+        else:
+            db_contact = {'name': ' '.join([contact['firstName'],contact['lastName']]),
+                          'email': contact['email'],
+                          'affiliations': [contact['company'],],
+                          'description': '',
+                          '_version': 1
+                          }
+            study['contact_persons'].append({'_id':contact_persons.save(db_contact), 'name':db_contact['name']})
     studies.save(study)
 
 

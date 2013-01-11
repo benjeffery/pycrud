@@ -9,7 +9,10 @@ pycrud.controller("StudiesCtrl", function($scope, Mongo) {
             for (var j=0;j<$scope.studies[i].sample_contexts.length;j++) {
                 count += $scope.studies[i].sample_contexts[j].samples.length
             }
-            $scope.studies[i].sample_count = count
+            $scope.studies[i].sample_count = count;
+//            for (j=0;j<$scope.studies[i].contact_persons.length;j++) {
+//                $scope.studies[i].contact_persons[j] = Mongo.get({collection:'contact_persons', id:$scope.studies[i].contact_persons[j]._id})
+//            }
         }
     });
 });
@@ -17,10 +20,17 @@ pycrud.controller("StudiesCtrl", function($scope, Mongo) {
 pycrud.controller("ViewStudyCtrl", function($scope, $routeParams, Mongo) {
     $scope.study = Mongo.get({collection:'studies', id:$routeParams.id}, function() {
     });
-    $scope.mapOptions = {
-        center: new google.maps.LatLng(35.784, -78.670),
-        zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+    $scope.mapOptions = function(lat, lon) {
+        new google.maps.Marker({
+            map: $scope.myMap,
+            position: new google.maps.LatLng(parseFloat(lat), parseFloat(lon))
+        });
+        return {
+            //center: new google.maps.LatLng(35.784, -78.670),
+            zoom: 9,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            center: new google.maps.LatLng(parseFloat(lat), parseFloat(lon))
+        };
     };
 });
 
@@ -33,7 +43,6 @@ pycrud.controller("EditStudyCtrl", function($scope, $routeParams, $location, Mon
         });
     };
 });
-
 
 pycrud.controller("ContactPersonsCtrl", function($scope, Mongo) {
     $scope.contact_persons = Mongo.query({collection:'contact_persons'}, function() {
@@ -51,4 +60,12 @@ pycrud.controller("EditContactPersonCtrl", function($scope, $routeParams, $locat
             $location.path('/contact_persons/'+$scope.person._id);
         });
     };
+    $scope.add = function() {
+        $scope.person.affiliations.push('');
+        $scope.form_person.$dirty=true;
+    }
+    $scope.remove = function(element) {
+        $scope.person.affiliations.splice($scope.person.affiliations.indexOf(element), 1);
+        $scope.form_person.$dirty=true;
+    }
 });

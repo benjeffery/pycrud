@@ -87,4 +87,4 @@ app.add_url_rule('/api/<collection>/<item_id>', view_func=mongo_view,
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
