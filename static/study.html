@@ -1,16 +1,17 @@
 <div class="row">
     <div class="span6">
-        <h3>{{ study.short_code }}</h3>
+        <h3>{{ study.name }}</h3>
+        <h4>{{ study.legacy_name }}</h4>
     </div>
     <div class="span6">
         <a class="pull-right" href="#/studies/{{study._id}}/edit"><button class="btn btn-primary">Edit</button></a>
     </div>
 </div>
 <div class="row">
-    <h4 class="span12">{{ study.name }}</h4>
+    <h4 class="span12">{{ study.title }}</h4>
 </div>
-<div class="row">
-    <p class="span6"><em><a href="#/contact_persons/{{ study.contact_person._id }}">{{ study.contact_person.name }}</a></em></p>
+<div ng-repeat="contact_person in study.contact_persons" class="row">
+    <p class="span6"><em><a href="#/contact_persons/{{ contact_person._id }}">{{ contact_person.name }}</a></em></p>
 </div>
 <div class="row">
     <p class="span6">{{ study.people.join(', ') }}</p>
@@ -22,10 +23,9 @@
     <div ng-repeat="context in study.sample_contexts" class="span12 well well-small">
         <div class="row">
             <div class="span6">
-                <h4> {{ context.name }}</h4>
-                <div ng-bind-html-unsafe="context.description | markdown"></div>
-                {{ context.location }}
-                <div class="map" id="map_canvas" ui-map="myMap" ui-options="mapOptions"></div>
+                <h4>{{ context.name }} - <em>{{ context.location.name }}, {{ context.location.country }}</em></h4>
+                <div class="well well-small" ng-bind-html-unsafe="context.description | markdown"></div>
+                <div class="map" id="map_canvas" ui-map="myMap" ui-options="mapOptions(context.location.lat, context.location.lon)"></div>
             </div>
             <div class="span6">
                 <button ng-init="display_samples = context.samples.length < 10" button-toggle="active" class="btn" ng-model="display_samples">Display {{ context.samples.length }} samples</button>

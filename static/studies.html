@@ -2,8 +2,9 @@
 <table class="table table-condensed table-hover">
     <thead>
     <tr>
-        <th>Short Code</th>
         <th>Name</th>
+        <th>Legacy</th>
+        <th>Title</th>
         <th>Contact</th>
         <th>People</th>
         <th>Sample Contexts</th>
@@ -13,9 +14,10 @@
     </thead>
     <tbody>
     <tr ng-repeat="study in studies | filter:search | orderBy:'short_code'">
-        <td><a href="#/studies/{{ study._id }}" ng-bind-html-unsafe="study.short_code | highlight:search"></a></td>
-        <td ng-bind-html-unsafe="study.name | cut:true:300 | highlight:search"></td>
-        <td ng-bind-html-unsafe="study.contact_person.name | highlight:search"></td>
+        <td><a href="#/studies/{{ study._id }}" ng-bind-html-unsafe="study.name | highlight:search"></a></td>
+        <td><a href="#/studies/{{ study._id }}" ng-bind-html-unsafe="study.legacy_name | highlight:search"></a></td>
+        <td ng-bind-html-unsafe="study.title | cut:true:300 | highlight:search"></td>
+        <td><div ng-repeat="contact_person in study.contact_persons"><a href="#/contact_persons/{{ contact_person._id }}"  ng-bind-html-unsafe="contact_person.name | highlight:search"></a></div></td>
         <td>{{ study.people.length }}</td>
         <td ><p ng-class="context.name" ng-repeat="context in study.sample_contexts | orderBy:'name'"><span>{{ context.samples.length }}:</span><span ng-bind-html-unsafe="context.name | highlight:search"></span></p></td>
         <td>{{ study.sample_count }}</td>
