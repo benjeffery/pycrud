@@ -122,3 +122,48 @@ pycrud.directive('mongoLink', function (Mongo) {
         }
     };
 });
+
+function bindMapEvents(scope, eventsStr, googleObject, element) {
+    angular.forEach(eventsStr.split(' '), function (eventName) {
+      //Prefix all googlemap events with 'map-', so eg 'click'
+      //for the googlemap doesn't interfere with a normal 'click' event
+      var $event = { type: 'map-' + eventName };
+      google.maps.event.addListener(googleObject, eventName, function (evt) {
+        element.trigger(angular.extend({}, $event, evt));
+        //We create an $apply if it isn't happening. we need better support for this
+        //We don't want to use timeout because tons of these events fire at once,
+        //and we only need one $apply
+        if (!scope.$$phase) scope.$apply();
+      });
+    });
+  }
+
+pycrud.directive('uiMap2',
+	    ['ui.config', '$parse', function (uiConfig, $parse) {
+
+	      var mapEvents = 'bounds_changed center_changed click dblclick drag dragend ' +
+	        'dragstart heading_changed idle maptypeid_changed mousemove mouseout ' +
+	        'mouseover projection_changed resize rightclick tilesloaded tilt_changed ' +
+	        'zoom_changed';
+	      var options = uiConfig.map || {};
+
+	      return {
+	        restrict: 'A',
+	        //doesn't work as E for unknown reason
+	        link: function (scope, elm, attrs) {
+	          var opts = angular.extend({}, options, scope.$eval(attrs.uiOptions));
+	          var map = new google.maps.Map(elm[0], opts);
+	          var model = $parse(attrs.uiMap2);
+
+	          //Set scope variable for the map
+	          model.assign(scope, map);
+
+	          bindMapEvents(scope, mapEvents, map, elm);
+	          
+	          new google.maps.Marker({
+	              map: map,
+	              position: opts.center
+	              })
+	        }
+	      };
+	    }]);
