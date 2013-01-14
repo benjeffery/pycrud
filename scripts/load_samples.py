@@ -94,18 +94,19 @@ for study in studies.find():
     study['name'] = af_study['name']
     study['description'] = af_study['description']
     for contact in af_study['contacts']:
-        #Some have no email so have to use name....
-        db_contact = contact_persons.find_one({'name':contact['name']})
+        name = ' '.join([contact['firstName'],contact['lastName']])
+        #Some have no email so have to use name for unique key for now....
+        db_contact = contact_persons.find_one({'name':name})
         if db_contact:
             study['contact_persons'].append({'_id':db_contact['_id'], 'name':db_contact['name']})
         else:
-            db_contact = {'name': ' '.join([contact['firstName'],contact['lastName']]),
+            db_contact = {'name': name,
                           'email': contact['email'],
                           'affiliations': [contact['company'],],
                           'description': '',
                           '_version': 1
                           }
-            study['contact_persons'].append({'_id':contact_persons.save(db_contact), 'name':db_contact['name']})
+            study['contact_persons'].append({'_id':contact_persons.save(db_contact), 'name':name})
     studies.save(study)
 
 
