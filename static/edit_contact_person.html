@@ -16,14 +16,9 @@
     <div class="control-group">
         <label class="control-label" for="affiliations">Affiliations</label>
         <div class="controls">
-            <div class="" ng-repeat="affiliation in person.affiliations">
-                <button class="btn btn-danger btn-form" ng-click="remove(affiliation)"><i class="icon-remove icon-white"></i></button>
-                <input class="span5" type="text" ng-model="affiliation">
-                <div class="span6" ng-bind-html-unsafe="affiliation | markdown"></div>
-            </div>
-            <button class="btn btn-success btn-form" ng-click="add()"><i class="icon-plus icon-white"></i></button>
-            <span class="help-block">List of affiliations. To put a link in use [Anchor Text](http://www.link.com)</span>
-
+            <span class="help-block">List of affiliations, one per line. To put a link in use [Anchor Text](http://www.link.com)</span>
+            <textarea ng-model="person.affiliations" edit-list="\n" class="span6" rows=4 type="text" id="affiliations"></textarea>
+            <span class="help-block" ng-repeat="affiliation in person.affiliations" ng-bind-html-unsafe="affiliation | markdown"></span>
         </div>
     </div>
     <div class="control-group">
