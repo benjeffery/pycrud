@@ -30,6 +30,11 @@
         <div class="navbar-inner">
             <a class="brand" href="#">PfDATA</a>
             {% if current_user.is_authenticated() %}
+                <ul class="nav">
+                    <li><a href="#/contact_persons"><i class="icon-user"></i> Contact Persons</a></li>
+                    <li><a href="#/studies"><i class="icon-tint"></i> Studies</a></li>
+                    <li><a href="#/problems"><i class="icon-exclamation-sign"></i> Problems</a></li>
+                </ul>
                 <button class="btn btn-inverse pull-right" id="browserid-logout">Logout</button>
                 <img gravatar-image class="navbar-text img-rounded pull-right" email="'{{ current_user.id }}'" size="40" rating="pg" default="404" >
                 <div class="navbar-text pull-right">{{ current_user.id }}</div>
