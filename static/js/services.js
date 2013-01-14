@@ -11,6 +11,7 @@ pycrud.factory('Mongo', function($resource) {
 pycrud.config(function($routeProvider) {
         $routeProvider.
             when('/', {controller:"CollectionListCtrl", templateUrl:'static/collection_list.html'}).
+            when('/problems', {controller:"ProblemsCtrl", templateUrl:'static/problems.html'}).
             when('/studies', {controller:"StudiesCtrl", templateUrl:'static/studies.html'}).
             when('/studies/:id', {controller:"ViewStudyCtrl", templateUrl:'static/study.html'}).
             when('/studies/:id/edit', {controller:"EditStudyCtrl", templateUrl:'static/edit_study.html'}).

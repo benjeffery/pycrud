@@ -2,6 +2,16 @@ pycrud.controller("CollectionListCtrl", function($scope, Mongo) {
     $scope.collections = Mongo.query()
 });
 
+pycrud.controller("ProblemsCtrl", function($scope, $http) {
+    $http({method: 'GET', url: '/problems'}).
+        success(function(data, status, headers, config) {
+            $scope.problems = data;
+        }).
+        error(function(data, status, headers, config) {
+            //TODO
+        });
+});
+
 pycrud.controller("StudiesCtrl", function($scope, Mongo) {
     $scope.studies = Mongo.query({collection:'studies'}, function() {
         for (var i=0;i<$scope.studies.length;i++) {

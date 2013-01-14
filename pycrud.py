@@ -7,8 +7,7 @@ import settings
 import pymongo
 from bson.objectid import ObjectId
 import json
-
-import inflect
+import problems
 
 #MONGO INIT
 from vermongo import VerCollection
@@ -37,10 +36,6 @@ login_manager.init_app(app)
 browser_id = BrowserID()
 browser_id.user_loader(get_user)
 browser_id.init_app(app)
-
-@app.route('/')
-def index_page():
-    return render_template('index.html', collections=settings.data_spec.keys())
 
 #JSON
 class MongoEncoder(json.JSONEncoder):
@@ -76,6 +71,16 @@ class MongoAPI(MethodView):
         result = VerCollection(db[collection]).update(request.json)
         return jsonify(result)
 
+#Basic routes
+@app.route('/')
+def index_page():
+    return render_template('index.html', collections=settings.data_spec.keys())
+
+@app.route('/problems')
+def problems_page():
+    return jsonify(problems.list_problems(db))
+
+#Mongo API
 mongo_view = login_required(MongoAPI.as_view('mongo'))
 app.add_url_rule('/api/', defaults={'collection': None, 'item_id': None},
     view_func=mongo_view, methods=['GET',])
