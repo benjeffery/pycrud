@@ -167,3 +167,35 @@ pycrud.directive('uiMap2',
 	        }
 	      };
 	    }]);
+
+pycrud.directive('editList', function () {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attr, ctrl) {
+            var separator = attr.editList || ',';
+            if (separator === "\\n")
+                separator = "\n";
+
+            var parse = function(viewValue) {
+                var list = [];
+
+                if (viewValue) {
+                    angular.forEach(viewValue.split(separator), function(value) {
+                        if (value) list.push($.trim(value));
+                    });
+                }
+                return list;
+            };
+
+            ctrl.$parsers.push(parse);
+            ctrl.$formatters.push(function(value) {
+                if (angular.isArray(value)) {
+                    return value.join(separator);
+                }
+
+                return undefined;
+            });
+        }
+    };
+});
+
