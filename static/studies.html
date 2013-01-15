@@ -2,6 +2,7 @@
 <table class="table table-condensed table-hover">
     <thead>
     <tr>
+        <th></th>
         <th>Name</th>
         <th>Legacy</th>
         <th>Title</th>
@@ -13,8 +14,15 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="study in studies | filter:search | orderBy:'short_code'">
-        <td><a href="#/studies/{{ study._id }}" ng-bind-html-unsafe="study.name | highlight:search"></a></td>
+    <tr ng-repeat="study in studies | filter:search | orderBy:'name'">
+        <td>
+            <a ng-show="study.alfresco_node" href="https://alfresco.cggh.org/share/page/folder-details?nodeRef={{ study.alfresco_node }}">
+                <img src="http://a.fsdn.com/con/icons/al/alfresco@sf.net/alfresco.jpg">
+            </a>
+        </td>
+        <td><a href="#/studies/{{ study._id }}" ng-bind-html-unsafe="study.name | highlight:search">
+            </a>
+        </td>
         <td><a href="#/studies/{{ study._id }}" ng-bind-html-unsafe="study.legacy_name | highlight:search"></a></td>
         <td ng-bind-html-unsafe="study.title | cut:true:300 | highlight:search"></td>
         <td><div ng-repeat="contact_person in study.contact_persons"><a href="#/contact_persons/{{ contact_person._id }}"  ng-bind-html-unsafe="contact_person.name | highlight:search"></a></div></td>

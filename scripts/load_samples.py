@@ -55,7 +55,12 @@ for line in Reader('metadata-2.0.2_withsites.txt'):
     #First get the study object
     study = studies.find_one({'legacy_name':line['Study']})
     if study is None:
-        study = {'legacy_name': line['Study'], 'sample_contexts':[], 'people':[], 'contact_persons':[], '_version':1}
+        study = {'legacy_name': line['Study'],
+                 'sample_contexts':[],
+                 'people':[],
+                 'contact_persons':[],
+                 'alfresco_node': '',
+                 '_version':1}
     sample_context_name = line['Site']
     if not sample_context_name and line['LabSample']=='TRUE':
         sample_context_name = 'LAB_Lab_Sample'
@@ -93,6 +98,7 @@ for study in studies.find():
     study['title'] = af_study['title'].split(' - ')[-1]
     study['name'] = af_study['name']
     study['description'] = af_study['description']
+    study['alfresco_node'] = af_study['nodeRef']
     for contact in af_study['contacts']:
         name = ' '.join([contact['firstName'],contact['lastName']])
         #Some have no email so have to use name for unique key for now....

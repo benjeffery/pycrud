@@ -1,6 +1,10 @@
 <div class="row">
     <div class="span6">
-        <h3>{{ study.name }}</h3>
+        <h3>
+            {{ study.name }}
+            <a ng-show="study.alfresco_node" href="https://alfresco.cggh.org/share/page/folder-details?nodeRef={{ study.alfresco_node }}">
+                <img width="25px" src="http://a.fsdn.com/con/icons/al/alfresco@sf.net/alfresco.jpg">
+            </a>
         <h4>{{ study.legacy_name }}</h4>
     </div>
     <div class="span6">
