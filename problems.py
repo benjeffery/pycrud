@@ -20,10 +20,11 @@ problem_defs = {
     },
 
     'contact_persons': {
-        'No email':               lambda p:len(p['email']) == 0,
-        'No affiliations':        lambda p:len(p['affiliations']) == 0,
-        'Description too short':  lambda p: num_words(p['description']) < 20,
-        'Description too long':   lambda p: num_words(p['description']) > 150,
+        'No email':                       lambda p: len(p['email']) == 0,
+        'No affiliations':                lambda p: len(p['affiliations']) == 0,
+        'No affiliation has a hyperlink': lambda p: all(('[' not in a) for a in p['affiliations']),
+        'Description too short':          lambda p: num_words(p['description']) < 20,
+        'Description too long':           lambda p: num_words(p['description']) > 150,
 
     }
 }
@@ -40,7 +41,6 @@ def list_problems(db):
                     })
             found_problems.setdefault(collection_name, []).append({'problem':problem,
                                                                    'entities': entities})
-    print found_problems
     return found_problems
 
 
