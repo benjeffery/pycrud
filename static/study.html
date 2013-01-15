@@ -28,7 +28,8 @@
         <div class="row">
             <div class="span6">
 
-                <h4>{{ context.name }} - <em>{{ context.location.name }}, {{ context.location.country }} {{ context.location.lat }}</em></h4>
+                <h4>{{ context.name }}<span ng-show="context.location.name || context.location.country"> - <em>{{ context.location.name }}, {{ context.location.country }}</em></span></h4>
+                <p>Location source: {{ context.info_source }}</p>
                 <div class="well well-small" ng-bind-html-unsafe="context.description | markdown"></div>
                 <div class="map" id="map_canvas" ui-map2="myMap" ui-options="mapOptions(context.location.lat, context.location.lon)"></div>
 

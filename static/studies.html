@@ -23,7 +23,7 @@
         <td><a href="#/studies/{{ study._id }}" ng-bind-html-unsafe="study.name | highlight:search">
             </a>
         </td>
-        <td><a href="#/studies/{{ study._id }}" ng-bind-html-unsafe="study.legacy_name | highlight:search"></a></td>
+        <td><div href="#/studies/{{ study._id }}" ng-bind-html-unsafe="study.legacy_name | highlight:search"></div></td>
         <td ng-bind-html-unsafe="study.title | cut:true:300 | highlight:search"></td>
         <td><div ng-repeat="contact_person in study.contact_persons"><a href="#/contact_persons/{{ contact_person._id }}"  ng-bind-html-unsafe="contact_person.name | highlight:search"></a></div></td>
         <td>{{ study.people.length }}</td>
