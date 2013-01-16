@@ -59,13 +59,24 @@
     <div class="span4">
         <ng-form name="form_context_location" class="form-horizontal">
             <div class="control-group">
-                <label class="control-label" for="name">Location Name</label>
+                <label class="control-label" for="loc_name_{{ $index }}">Location Name</label>
                 <div class="controls">
-                    <input type="text" id="name" name="name" ng-model="context.location.name">
-                    <input country-select ng-model="context.location.country" style="width:220px">
+                    <input type="text" id="loc_name_{{ $index }}" name="name" ng-model="context.location.name">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="country_{{ $index }}">Country</label>
+                <div class="controls">
+                    <input country-select ng-model="context.location.country" style="width:220px" id="country_{{ $index }}">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="country">Point</label>
+                <div class="controls">
                     <div map-point editable ng-model="context.location" zoom="9" class="map"></div>
                 </div>
             </div>
+
         </ng-form>
     </div>
 </div>
