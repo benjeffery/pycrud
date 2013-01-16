@@ -31,8 +31,7 @@
                 <h4>{{ context.name }}<span ng-show="context.location.name || context.location.country"> - <em>{{ context.location.name }}, {{ context.location.country }}</em></span></h4>
                 <p>Location source: {{ context.info_source }}</p>
                 <div class="well well-small" ng-bind-html-unsafe="context.description | markdown"></div>
-                <div class="map" id="map_canvas" ui-map2="myMap" ui-options="mapOptions(context.location.lat, context.location.lon)"></div>
-
+                <div map-point ng-model="context.location" zoom="9" class="map"></div>
             </div>
             <div class="span6">
                 <button ng-init="display_samples = context.samples.length < 10" button-toggle="active" class="btn" ng-model="display_samples">Display {{ context.samples.length }} samples</button>

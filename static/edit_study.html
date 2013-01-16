@@ -63,6 +63,7 @@
                 <div class="controls">
                     <input type="text" id="name" name="name" ng-model="context.location.name">
                     <input country-select ng-model="context.location.country" style="width:220px">
+                    <div map-point editable ng-model="context.location" zoom="9" class="map"></div>
                 </div>
             </div>
         </ng-form>
