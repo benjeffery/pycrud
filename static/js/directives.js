@@ -214,8 +214,8 @@ pycrud.directive('mapPoint',
                         scope.$apply(function () {
                             var model = controller.$modelValue;
                             model.lat = event.latLng.lat();
-                            model.long = event.latLng.lng();
-                            marker.setPosition(new google.maps.LatLng(parseFloat(model.lat), parseFloat(model.long)));
+                            model.lon = event.latLng.lng();
+                            marker.setPosition(new google.maps.LatLng(parseFloat(model.lat), parseFloat(model.lon)));
                             controller.$setViewValue(model);
                         });
                     });
