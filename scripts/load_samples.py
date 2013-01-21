@@ -108,7 +108,8 @@ for study in studies.find():
         drup = dscrape.info_for_name(name)
         if drup:
             try:
-                desc = html2text.html2text(drup['bio'])
+                bio = drup['bio'].decode("utf-8")
+                desc = html2text.html2text(bio)
             except UnicodeDecodeError:
                 print "Unicode decode error for ", name
         else:
