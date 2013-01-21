@@ -1,13 +1,13 @@
 <h3>{{ study.short_code }}</h3>
 <ng-form name="form_study" ng-model="study" class="form-horizontal">
     <div class="control-group">
-        <label class="control-label" for="name">Short Code</label>
+        <label class="control-label" for="name">Name</label>
         <div class="controls">
             <input type="text" id="name" name="name" ng-model="study.name">
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="title">title</label>
+        <label class="control-label" for="title">Title</label>
         <div class="controls">
             <input class="span6" type="text" id="title" title="title" ng-model="study.title">
         </div>
@@ -29,14 +29,59 @@
         <label class="control-label" for="description">Description</label>
         <div class="controls">
             <span class="help-block">Markdown format: <a href="http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet">help</a></span>
-            <textarea class="span6" rows=6 type="text" id="description" description="description" ng-model="study.description"></textarea>
+            <textarea class="span6" rows=6 type="text" id="description" ng-model="study.description"></textarea>
             <span class="well well-small help-block" ng-bind-html-unsafe="study.description | markdown"></span>
         </div>
-
     </div>
+    <div class="control-group">
+        <label class="control-label" for="description">Sample Contexts</label>
+    </div>
+</ng-form>
+<div ng-repeat="context in study.sample_contexts" class="well well-small row">
+    <div class="span5">
+        <ng-form name="form_context" class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="name_{{ $index }}">Name</label>
+                <div class="controls">
+                    <input type="text" id="name_{{ $index }}" name="name" ng-model="context.name">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="description_{{ $index }}">Description</label>
+                <div class="controls">
+                    <span class="help-block">Markdown format: <a href="http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet">help</a></span>
+                    <textarea class="span3" rows=4 type="text" id="description_{{ $index }}" ng-model="context.description"></textarea>
+                    <span class="well well-small help-block" ng-bind-html-unsafe="context.description | markdown"></span>
+                </div>
+            </div>
+        </ng-form>
+    </div>
+    <div class="span4">
+        <ng-form name="form_context_location" class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="loc_name_{{ $index }}">Location Name</label>
+                <div class="controls">
+                    <input type="text" id="loc_name_{{ $index }}" name="name" ng-model="context.location.name">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="country_{{ $index }}">Country</label>
+                <div class="controls">
+                    <input country-select ng-model="context.location.country" style="width:220px" id="country_{{ $index }}">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="country">Point</label>
+                <div class="controls">
+                    <div map-point editable ng-model="context.location" zoom="9" class="map"></div>
+                </div>
+            </div>
+
+        </ng-form>
+    </div>
+</div>
     <button ng-click="save()" ng-disabled="(!form_study.$dirty) || form_study.$invalid"
             class="btn btn-primary btn-form">Save</button>
-</ng-form>
 <div pull-left>
 <pre>{{ study | json }}</pre>
 </div>

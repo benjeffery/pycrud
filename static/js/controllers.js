@@ -30,18 +30,6 @@ pycrud.controller("StudiesCtrl", function($scope, Mongo) {
 pycrud.controller("ViewStudyCtrl", function($scope, $routeParams, Mongo) {
     $scope.study = Mongo.get({collection:'studies', id:$routeParams.id}, function() {
     });
-    $scope.mapOptions = function(lat, lon) {
-        new google.maps.Marker({
-            map: $scope.myMap,
-            position: new google.maps.LatLng(parseFloat(lat), parseFloat(lon))
-        });
-        return {
-            //center: new google.maps.LatLng(35.784, -78.670),
-            zoom: 9,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            center: new google.maps.LatLng(parseFloat(lat), parseFloat(lon))
-        };
-    };
 });
 
 pycrud.controller("EditStudyCtrl", function($scope, $routeParams, $location, Mongo) {
