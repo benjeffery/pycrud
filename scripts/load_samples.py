@@ -44,8 +44,8 @@ for line in Reader('SitesInfo.txt'):
     location = {
         'paul_id': line['ID'],
         'name': ' '.join(line['ID'].split('_')[1:]),
-        'lat': line['Location1'],
-        'lon': line['Loc2'],
+        'lat': line['Latitude'],
+        'lon': line['Longitude'],
         'country': line['Country'],
         'sub-continent': line['SubCont'],
         '_version':1
@@ -53,7 +53,7 @@ for line in Reader('SitesInfo.txt'):
     #paul_id_to_db_id[line['ID']]  = locations.save(location)
     paul_id_to_location[line['ID']]  = location
 
-for line in Reader('metadata-2.0.2_withsites.txt'):
+for line in Reader('metadata-2.2_withsites.txt'):
     #First get the study object
     study = studies.find_one({'legacy_name':line['Study']})
     if study is None:
