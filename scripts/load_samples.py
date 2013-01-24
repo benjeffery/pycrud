@@ -106,10 +106,12 @@ for study in studies.find():
         #Some have no email so have to use name for unique key for now....
         db_contact = contact_persons.find_one({'name':name})
         drup = dscrape.info_for_name(name)
+        image = ''
         if drup:
             try:
                 bio = drup['bio'].decode("utf-8")
                 desc = html2text.html2text(bio)
+                image = drup['image']
             except UnicodeDecodeError:
                 print "Unicode decode error for ", name
         else:
@@ -121,6 +123,7 @@ for study in studies.find():
                           'email': contact['email'],
                           'affiliations': [contact['company'],],
                           'description': desc,
+                          'image': image,
                           '_version': 1
                           }
             study['contact_persons'].append({'_id':contact_persons.save(db_contact), 'name':name})
