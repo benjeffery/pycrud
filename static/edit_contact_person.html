@@ -36,9 +36,31 @@
             <img ng-src="{{person.image}}">
         </div>
     </div>
+   
     <button ng-click="save()" ng-disabled="(!form_person.$dirty) || form_person.$invalid"
             class="btn btn-primary btn-form">Save</button>
+   
 </ng-form>
+ <div class="row">
+        <label for="fileToUpload">Select a File to Upload</label><br />
+        <input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" />
+    </div>
+    <div ng-show="files.length">
+        <div ng-repeat="file in files.slice(0)">
+            <span>{{file.webkitRelativePath || file.name}}</span>
+            (<span ng-switch="file.size > 1024*1024">
+                <span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
+                <span ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
+            </span>)
+        </div>
+        <input type="button" ng-click="uploadFile()" value="Upload" />
+        <div ng-show="progressVisible">
+            <div class="percent">{{progress}}%</div>
+            <div class="progress-bar">
+                <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
+            </div>
+        </div>
+    </div>
 <div pull-left>
     <pre>{{ person | json }}</pre>
 </div>
